@@ -1,126 +1,102 @@
 import re
 
-total_cars = 0
-total_planes = 0
-total_ships = 0
-total_users = 0
+def register_vehicle():
+    total_cars = 0
+    total_planes = 0
+    total_ships = 0
+    total_users = 0
 
+    while True:
+        identification = input("Insert your identification here ('CLOSE' to finish): ")
+        if identification == "CLOSE":
+            break
 
-def register_vehicle(total_cars,total_planes,total_ships,total_users):
-    identification = raw_input("Insert your identification here ('CLOSE' to finish): ")
-    while identification != "CLOSE":
-        if any(char.isdigit() for char in identification) or identification.isalpha():
-            name = raw_input("Insert your full name here: ")
-            if any(char.isdigit() for char in name):
-                print("Name cannot contain numbers or special characters. Please try again.")
+        if not identification.isalnum():
+            print("ID cannot contain special characters. Please try again.")
+            continue
+
+        name = input("Insert your full name here: ")
+        if any(char.isdigit() for char in name):
+            print("Name cannot contain numbers or special characters. Please try again.")
+            continue
+
+        print(f"Welcome, {name}")
+        vehicle = input("What type of vehicle do you own?: ")
+        year = input("What year did you buy your vehicle?: ")
+        while not year.isdigit() or len(year) != 4:
+            year = input("Invalid year. Please enter the year you bought your vehicle using Numbers!: ")
+
+        with open("vehicle_info.txt", "a") as file:
+            file.write(f"User_ID: {identification}\n")
+            file.write(f"User_Name: {name}\n")
+            file.write(f"Year_of_Purchase: {year}\n")
+
+            if vehicle == "CAR":
+                total_cars += 1
+                plate = input(f"{name}, what is your car's plate number?: ")
+                file.write(f"Plate_Number: {plate}\n")
+                file.write("Type_of_Vehicle: CAR\n\n")
+                print("-" * 30)
+            elif vehicle == "PLANE":
+                total_planes += 1
+                plane_type = input("What type of plane do you own?: ")
+                file.write(f"Plane_Type: {plane_type}\n")
+                file.write("Type_of_Vehicle: PLANE\n\n")
+                print("-" * 30)
+            elif vehicle == "SHIP":
+                total_ships += 1
+                ship_type = input("What type of ship do you own?: ")
+                file.write(f"Ship_Type: {ship_type}\n")
+                file.write("Type_of_Vehicle: SHIP\n\n")
+                print("-" * 35)
             else:
-                print("Welcome, " + name)
-                vehicle = raw_input("What type of vehicle do you own?: ")
-                if vehicle == "CAR":
-                    total_cars += 1
-                    plate = raw_input(name + ", what is your car's plate number?: ")
-                    year = raw_input("What year did you buy your car?: ")
-                    while not year.isdigit() or len(year) != 4:
-                        year = raw_input("Invalid year. Please enter the year you bought your vehicle using Numbers!:  ")
+                print("Invalid vehicle type. Please try again.")
+                continue
 
-                    with open("vehicle_info.txt", "a") as file:
-                        file.write("User_ID: {}\n".format(identification))
-                        file.write("User_Name: {}\n".format(name))
-                        file.write("Plate_Number: {}\n".format(plate))
-                        file.write("Year_of_Purchase: {}\n".format(year))
-                        file.write("Type_of_Car: {}\n\n".format(vehicle))
-                    print("-" * 30)
-
-                elif vehicle == "PLANE":
-                    total_planes += 1
-                    plane_type = raw_input("What type of plane do you own?: ")
-                    year = raw_input("What year did you buy your vehicle?: ")
-                    while not year.isdigit() or len(year) != 4:
-                        year = raw_input("Invalid year. Please enter the year you bought your vehicle using Numbers!:  ")
-
-                    with open("vehicle_info.txt", "a") as file:
-                        file.write("User_ID: {}\n".format(identification))
-                        file.write("User_Name: {}\n".format(name))
-                        file.write("Plane_Type: {}\n".format(plane_type))
-                        file.write("Year_of_Purchase: {}\n".format(year))
-                        file.write("Type_of_Plane: {}\n\n".format(vehicle))
-                    print("-" * 30)
-
-                elif vehicle == "SHIP":
-                    total_ships += 1
-                    ship_type = raw_input("What type of ship do you own?")
-                    year = raw_input("What year did you buy your ship?: ")
-                    while not year.isdigit() or len(year) != 4:
-                        year = raw_input("Invalid year. Please enter the year you bought your vehicle using Numbers!:  ")
-
-                    with open("vehicle_info.txt", "a") as file:
-                        file.write("User_ID: {}\n".format(identification))
-                        file.write("User_Name: {}\n".format(name))
-                        file.write("Ship_Type: {}\n".format(ship_type))
-                        file.write("Year_of_Purchase: {}\n".format(year))
-                        file.write("Type_of_Ship: {}\n\n".format(vehicle))
-                    print("-" * 35)
-                total_users += 1
-
-            identification = raw_input("Insert your ID here ('CLOSE' to finish): ")
-            print("ID cannot contain special characters. Please try again.")
-            identification = raw_input("Insert your ID here ('CLOSE' to finish): ")
-        else:
-            print("ID cannot contain special characters. Please try again.")
-            identification = raw_input("Insert your ID here ('CLOSE' to finish): ")
+        total_users += 1
 
     print("Exiting Program . . . Have a nice day!")
 
-
 def search_vehicle_info():
-    identification = raw_input("Enter your ID to search for vehicle information: ")
+    identification = input("Enter your ID to search for vehicle information: ")
     with open("vehicle_info.txt", "r") as file:
         found = False
         for line in file:
-            if "User_ID: {}".format(identification) in line:
+            if f"User_ID: {identification}" in line:
                 found = True
                 print(line.strip())
-                for i in range(4):
+                for _ in range(4):
                     print(next(file).strip())
                 print("-" * 50)
-
         if not found:
-            print("No information found for {}.".format(identification))
+            print(f"No information found for {identification}.")
 
-def admin_remove( ):
-    with open("vehicle_info.txt","w") as file:
-        with open ("vehicle_info.txt") as file:
-            lines=file.readlines()
-        if line_number <= len(lines):
-            del lines[line_number - 1]
-            with open("vehicle_info.txt" , "w") as file:
-                for line in lines:
-                    file.write(line)
-            
-            
-        else:
-            print ("Line " , line_number , " does not exist in the file")
-            print("File has" , len(lines) , "lines")
-            
-            print(lines)
-        delete_filename = input ("File: ")
-        delete_line_number = input ("Line")
+def admin_remove(line_number):
+    with open("vehicle_info.txt", "r") as file:
+        lines = file.readlines()
 
-        delete_line(delete_filename, delete_line_number)
-     
+    if line_number <= len(lines):
+        del lines[line_number - 1]
+        with open("vehicle_info.txt", "w") as file:
+            file.writelines(lines)
+        print(f"Line {line_number} has been removed.")
+    else:
+        print(f"Line {line_number} does not exist in the file")
+        print(f"File has {len(lines)} lines")
 
 def admin():
     total_cars = 0
     total_planes = 0
     total_ships = 0
     total_users = 0
+
     with open("vehicle_info.txt", "r") as file:
         for line in file:
-            if "Type_of_Car" in line:
+            if "Type_of_Vehicle: CAR" in line:
                 total_cars += 1
-            elif "Type_of_Plane" in line:
+            elif "Type_of_Vehicle: PLANE" in line:
                 total_planes += 1
-            elif "Type_of_Ship" in line:
+            elif "Type_of_Vehicle: SHIP" in line:
                 total_ships += 1
             elif "User_ID" in line:
                 total_users += 1
@@ -131,21 +107,28 @@ def admin():
     print("- Planes:", total_planes)
     print("- Ships:", total_ships)
 
-    admin_option=int(input("1: Remove Information. 2: Change inforamtion. 3: Go back"))
-    if admin_option=="1":
-        admin_remove( )
-    elif admin_option=="2":
-        admin_edit( )
-    elif admin_option=="3":
-        option = raw_input("Enter 1 to register a vehicle, 2 to search for vehicle information, or Q to quit: ")
-    else:
-        print ("Unknown Command, Please try again")
-        admin_option=int(input("1: Remove Information. 2: Change inforamtion. 3: Go back"))
+    try:
+        admin_option = int(input("1: Remove Information. 2: Change information. 3: Go back: "))
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+        return
 
+    if admin_option == 1:
+        try:
+            line_number = int(input("Enter the line number to remove: "))
+            admin_remove(line_number)
+        except ValueError:
+            print("Invalid input. Please enter a number.")
+    elif admin_option == 2:
+        print("Feature not implemented.")
+    elif admin_option == 3:
+        return
+    else:
+        print("Unknown Command, Please try again")
 
 while True:
-    print ("Welcome to VMP. Usage of CAPS is required while running the program!")
-    option = raw_input("Enter 1 to register a vehicle, 2 to search for vehicle information, or Q to quit: ")
+    print("Welcome to VMP. Usage of CAPS is required while running the program!")
+    option = input("Enter 1 to register a vehicle, 2 to search for vehicle information, or Q to quit: ")
     if option == "1":
         register_vehicle()
     elif option == "2":
@@ -157,4 +140,3 @@ while True:
         admin()
     else:
         print("Invalid option, please try Again!")
-        option = raw_input("Enter 1 to register a vehicle, 2 to search for vehicle information, or q to quit: ")
