@@ -9,3 +9,6 @@ NOTE ! You must not change the name of the .txt file once its created. Doing so 
 You must ensure that the .txt file and the .py file are in the same folder. 
 You must not change the content of the .txt file to ensure it runs smoothly , and will not create any sort of errors. 
 You are allowed to take the program and change it as you please , but if you wish to upload it anywhere please do mention that you used this repository , it helps me alot you know !!
+
+The program might not function properly on some devices. I'll be honest here with you , i've got no clue why this happens. Some had questioned whether or not its because the data is stored on a .txt file
+Tho aware of the issues this creates, and the fact an actuall database would work better with it , i do not consider to make this update yet, as the following code was not intented to become something great , but intead to be used an evidence of the programmers knowledge and capability of using the programming Language Python!
